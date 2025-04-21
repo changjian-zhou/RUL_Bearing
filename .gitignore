@@ -1,0 +1,7 @@
+log/
+models/
+phm_ieee_2012_data_challenge_dataset/
+pkl_data/
+.idea/
+data_loaderold.py
+dataset.py
