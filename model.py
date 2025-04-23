@@ -27,25 +27,12 @@ class Model(nn.Module):
             nn.AdaptiveMaxPool1d(4),
         )
 
-        self.lstm = nn.LSTM(input_size=128*4, hidden_size=128, num_layers=1, batch_first=True, dropout=0.5)  # LSTM层
-
-
-        self.classifier = nn.Sequential(
-            nn.Linear(128, 64),
-            # nn.BatchNorm1d(64),
-            nn.ReLU(),
-            # nn.Dropout(),
-        )
+        self.lstm = nn.LSTM(input_size=128 * 4, hidden_size=128, num_layers=1, batch_first=True, dropout=0.5)  # LSTM层
 
         self.rul = nn.Sequential(
-            nn.Linear(64, 32),
-            # nn.BatchNorm1d(32),
-            nn.ReLU(),
-            # nn.Dropout(),
-            nn.Linear(32, 1),
+            nn.Linear(128, 1),
             nn.Sigmoid()
         )
-
 
     def forward(self, input_data):
         batch_size, sequence_len, C, fea = input_data.size()
@@ -58,7 +45,6 @@ class Model(nn.Module):
         feature, _ = self.lstm(input_data)
 
         feature = feature[:, -1, :]
-        feature = self.classifier(feature)
 
         rul_output = self.rul(feature)
 
